@@ -1,7 +1,7 @@
 # py-R-FCN
 R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
-py-R-FCN now supports end-to-end training. 
+py-R-FCN now supports joint training. 
 
 ### Disclaimer
 
@@ -13,7 +13,7 @@ py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
- - gives slightly lower mAP as the MATLAB version, I'm working on it, checking whether end-to-end training suffers from OHEM, or end-to-end training needs more iteration.
+ - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)), I'm working on it, checking whether joint training suffers from OHEM, or joint training needs more iteration.
 
 #### Some modification
 
@@ -27,7 +27,7 @@ In conclusion:
 
 `BATCH_SIZE: -1` is required for OHEM
 
-And I've already provided two configuration files for you(w/ OHEM and w/o OHEM) under experiments/cfgs folder, you could just use them and needn't change anything.
+And I've already provided two configuration files for you(w/ OHEM and w/o OHEM) under `experiments/cfgs` folder, you could just use them and needn't change anything.
 
 ### License
 
