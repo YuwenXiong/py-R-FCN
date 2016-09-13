@@ -76,7 +76,7 @@ Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
 1.  I do not provide demo currently, I'll add it soon.
 
 ### Installation
-1. Clone the Faster R-CNN repository
+1. Clone the R-FCN repository
   ```Shell
   git clone https://github.com/Orpine/py-R-FCN.git
   ```
