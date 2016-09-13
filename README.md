@@ -8,14 +8,24 @@ py-R-FCN now supports end-to-end training.
 The official R-FCN code (written in MATLAB) is available [here](https://github.com/daijifeng001/R-FCN).
 If your goal is to reproduce the results in the [NIPS 2016 paper](https://arxiv.org/abs/1605.06409), please use the [official code](https://github.com/daijifeng001/R-FCN).
 
-py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn ) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ), thanks for them.
+py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn )(include this README) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ), thanks for them.
 
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
  - gives similar, but not exactly the same, mAP as the MATLAB version
 
-The original py-faster-rcnn uses class-aware bounding box regression. However, R-FCN use agonistic bounding box regression to reduce model complexity. So I add a configuration AGONISTIC into fast_rcnn/config.py, and the default value is False. You should set it to True both on train and test phase if you want to use class agonistic training and test.
+#### Some modification
+
+The original py-faster-rcnn uses class-aware bounding box regression. However, R-FCN use class-agonistic bounding box regression to reduce model complexity. So I add a configuration AGONISTIC into fast_rcnn/config.py, and the default value is False. You should set it to True both on train and test phase if you want to use class agonistic training and test. 
+
+OHEM need all rois to select the hard examples, so I changed the sample strategy, set `BATCH_SIZE: -1` for OHEM, otherwise OHEM would not take effect.
+
+In conclusion:
+`AGONISTIC: True` is required for class-agonistic bounding box regression
+`BATCH_SIZE: -1` is required for OHEM
+
+And I've already provided two configuration files for you(w/ OHEM and w/o OHEM) under experiments/cfgs folder, you could just use them and needn't change anything.
 
 ### License
 
@@ -63,7 +73,46 @@ Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
 ### Demo
 1.  I do not provide demo currently, I'll add it soon.
 
+### Installation
+1. Clone the Faster R-CNN repository
+  ```Shell
+  git clone https://github.com/Orpine/py-R-FCN.git
+  ```
+  We'll call the directory that you cloned R-FCN into `RFCN_ROOT`
+
+2. Clone the Caffe repository
+  ```Shell
+  cd $RFCN_ROOT
+  git clone https://github.com/Microsoft/caffe.git
+  ```
+  [optional] 
+  ```Shell
+  cd caffe
+  git reset --hard 1a2be8e
+  ```
+  (I only test on this commit, and I'm not sure whether this Caffe is still compatible with the prototxt in this repository in the future)
+  
+  If you followed the above instruction, python code will add `$RFCN_ROOT/caffe/python` to `PYTHONPATH` automatically, otherwise you need to add `$CAFFE_ROOT/python` by your own, you could check `$RFCN_ROOT/tools/_init_paths.py` for more details.
+
+3. Build the Cython modules
+    ```Shell
+    cd $RFCN_ROOT/lib
+    make
+    ```
+
+4. Build Caffe and pycaffe
+    ```Shell
+    cd $RFCN_ROOT/caffe
+    # Now follow the Caffe installation instructions here:
+    #   http://caffe.berkeleyvision.org/installation.html
+
+    # If you're experienced with Caffe and have all of the requirements installed
+    # and your Makefile.config in place, then simply do:
+    make -j8 && make pycaffe
+   ```
+
 ### Preparation for Training & Testing
+
 1. Download the training, validation, test data and VOCdevkit
 
 	```Shell
@@ -124,9 +173,10 @@ Output is written underneath `$RFCN_ROOT/output`.
 
 ```Shell
 cd $RFCN_ROOT
-./experiments/scripts/rfcn_end2end[_ohem].sh [GPU_ID] [NET] [--set ...]
+./experiments/scripts/rfcn_end2end[_ohem].sh [GPU_ID] [NET] [DATASET] [--set ...]
 # GPU_ID is the GPU you want to train on
 # NET in {ResNet-50, ResNet-101} is the network arch to use
+# DATASET in {pascal_voc, coco} is the dataset to use(I only tested on pascal_voc)
 # --set ... allows you to specify fast_rcnn.config options, e.g.
 #   --set EXP_DIR seed_rng1701 RNG_SEED 1701
 ```
