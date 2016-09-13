@@ -13,7 +13,7 @@ py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
- - gives similar, but not exactly the same, mAP as the MATLAB version
+ - gives slightly lower mAP as the MATLAB version, I'm working on it, checking whether end-to-end training suffers from OHEM, or end-to-end training needs more iteration.
 
 #### Some modification
 
@@ -46,7 +46,7 @@ If you find R-FCN useful in your research, please consider citing:
                    | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
 R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 76.8% | -        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | - | -        | -           |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 78.1% | -        | 0.136sec           |
 
 
 ### Requirements: software
