@@ -45,8 +45,8 @@ If you find R-FCN useful in your research, please consider citing:
 ### Main Results
                    | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
-R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 76.8% | N/A        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | N/A | N/A        | N/A            |
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 76.8% | -        | 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | - | -        | -           |
 
 
 ### Requirements: software
