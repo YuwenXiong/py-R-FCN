@@ -8,7 +8,7 @@ py-R-FCN now supports joint training.
 The official R-FCN code (written in MATLAB) is available [here](https://github.com/daijifeng001/R-FCN).
 If your goal is to reproduce the results in the [NIPS 2016 paper](https://arxiv.org/abs/1605.06409), please use the [official code](https://github.com/daijifeng001/R-FCN).
 
-py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn )(include this README) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ), thanks for them.
+py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn )(include this README) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ), thanks for their great works.
 
 There are slight differences between the two implementations.
 In particular, this Python port
