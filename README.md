@@ -141,7 +141,7 @@ Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
   	# ... and several other directories ...
   	```
 
-4. Since py-faster-rcnn does not support muliple training dataset, we need to merge VOC 2007 data and VOC 2012 data maually. Just make a new directory named `VOC0712`, put all subfolder except `ImageSets` in `VOC2007` and `VOC2012` into `VOC0712`(you'll merge some folder). I provided merged-version ImageSet text files for you, please put them into VOCdevkit/VOC0712/ImageSets.
+4. Since py-faster-rcnn does not support multiple training datasets, we need to merge VOC 2007 data and VOC 2012 data manually. Just make a new directory named `VOC0712`, put all subfolders except `ImageSets` in `VOC2007` and `VOC2012` into `VOC0712`(you'll merge some folders). I provide a merged-version `ImageSets` folder for you, please put it into `VOCdevkit/VOC0712/`.
 
 5. Then the folder structure should look like this
   ```Shell
