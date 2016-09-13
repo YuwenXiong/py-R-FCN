@@ -22,7 +22,9 @@ The original py-faster-rcnn uses class-aware bounding box regression. However, R
 OHEM need all rois to select the hard examples, so I changed the sample strategy, set `BATCH_SIZE: -1` for OHEM, otherwise OHEM would not take effect.
 
 In conclusion:
+
 `AGONISTIC: True` is required for class-agonistic bounding box regression
+
 `BATCH_SIZE: -1` is required for OHEM
 
 And I've already provided two configuration files for you(w/ OHEM and w/o OHEM) under experiments/cfgs folder, you could just use them and needn't change anything.
