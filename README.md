@@ -72,8 +72,6 @@ R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 78.7%(80k110k)
 
 Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
 
-### Demo
-1.  I do not provide demo currently, I'll add it soon.
 
 ### Installation
 1. Clone the R-FCN repository
@@ -112,6 +110,19 @@ Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
     # and your Makefile.config in place, then simply do:
     make -j8 && make pycaffe
    ```
+
+### Demo
+1.  To use demo you need to download the pretrained R-FCN model, please download the model manually from [OneDrive](https://1drv.ms/u/s!AoN7vygOjLIQqUWHpY67oaC7mopf), and put it under `$RFCN/data`. Make sure it looks like this:
+  ```Shell
+  $RFCN/data/rfcn_models/resnet50_rfcn_final.caffemodel
+  $RFCN/data/rfcn_models/resnet101_rfcn_final.caffemodel
+  ```
+2.  To run the demo
+  ```Shell
+  $RFCN/tools/demo_rfcn.py
+  ```
+  The demo performs detection using a ResNet-101 network trained for detection on PASCAL VOC 2007.
+
 
 ### Preparation for Training & Testing
 
