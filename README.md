@@ -13,7 +13,7 @@ py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
- - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)), I'm working on it, checking whether joint training suffers from OHEM, or joint training needs more iteration.
+ - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)).
 
 #### Some modification
 
