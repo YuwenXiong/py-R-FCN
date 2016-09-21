@@ -2,5 +2,6 @@ selective_search*
 imagenet_models*
 fast_rcnn_models*
 faster_rcnn_models*
+rfcn_models*
 VOCdevkit*
 cache

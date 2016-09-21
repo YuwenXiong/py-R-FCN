@@ -6927,7 +6927,7 @@ layer {
 layer {
   name: "rpn_conv/3x3"
   type: "Convolution"
-  bottom: "res5c"
+  bottom: "res4b22"
   top: "rpn/output"
   param { lr_mult: 1.0 }
   param { lr_mult: 2.0 }
