@@ -5,7 +5,7 @@ py-R-FCN now supports joint training.
 
 ### News
 
-By changing the default value of `max\_per\_image` and `thresh` in test phase from py-faster-rcnn settings to offical implementation settings, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
+By changing the default value of `max_per_image` and `thresh` in test phase from py-faster-rcnn settings to offical implementation settings, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
 
 ### Disclaimer
 
