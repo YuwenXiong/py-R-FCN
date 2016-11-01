@@ -5,7 +5,7 @@ py-R-FCN now supports joint training.
 
 ### News
 
-By changing the default value of 'max\_per\_image' and 'thresh' in test phase from py-faster-rcnn setting to offical implementation setting, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
+By changing the default value of `max\_per\_image` and `thresh` in test phase from py-faster-rcnn settings to offical implementation settings, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
 
 ### Disclaimer
 
@@ -17,7 +17,6 @@ py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
- - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)).
 
 #### Some modification
 
