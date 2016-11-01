@@ -17,7 +17,7 @@ py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-
 There are slight differences between the two implementations.
 In particular, this Python port
  - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
- - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)), I'm working on it, checking whether joint training suffers from OHEM, or joint training needs more iteration.
+ - gives slightly lower mAP as the MATLAB version([The paper](https://arxiv.org/abs/1605.06409) mentioned that joint training with OHEM may delivers a lower accuracy(check the footnote at page 4)).
 
 #### Some modification
 
@@ -76,8 +76,6 @@ R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~78.7%~~<br/>
 
 Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
 
-### Demo
-1.  I do not provide demo currently, I'll add it soon.
 
 ### Installation
 1. Clone the R-FCN repository
@@ -116,6 +114,24 @@ Any NVIDIA GPU with 6GB or larger memory is OK(4GB is enough for ResNet-50).
     # and your Makefile.config in place, then simply do:
     make -j8 && make pycaffe
    ```
+
+### Demo
+1.  To use demo you need to download the pretrained R-FCN model, please download the model manually from [OneDrive](https://1drv.ms/u/s!AoN7vygOjLIQqUWHpY67oaC7mopf), and put it under `$RFCN/data`. 
+
+    Make sure it looks like this:
+    ```Shell
+    $RFCN/data/rfcn_models/resnet50_rfcn_final.caffemodel
+    $RFCN/data/rfcn_models/resnet101_rfcn_final.caffemodel
+    ```
+
+2.  To run the demo
+  
+    ```Shell
+    $RFCN/tools/demo_rfcn.py
+    ```
+    
+  The demo performs detection using a ResNet-101 network trained for detection on PASCAL VOC 2007.
+
 
 ### Preparation for Training & Testing
 
