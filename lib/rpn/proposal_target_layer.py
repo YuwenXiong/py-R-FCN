@@ -131,7 +131,7 @@ def _get_bbox_regression_labels(bbox_target_data, num_classes):
     # print 'proposal_target_layer:', bbox_targets.shape
     bbox_inside_weights = np.zeros(bbox_targets.shape, dtype=np.float32)
     inds = np.where(clss > 0)[0]
-    if cfg.TRAIN.AGONISTIC:
+    if cfg.TRAIN.AGNOSTIC:
         for ind in inds:
             cls = clss[ind]
             start = 4 * (1 if cls > 0 else 0)

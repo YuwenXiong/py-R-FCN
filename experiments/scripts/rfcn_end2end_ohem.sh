@@ -63,7 +63,7 @@ NET_FINAL=`tail -n 100 ${LOG} | grep -B 1 "done solving" | grep "Wrote snapshot"
 set -x
 
 time ./tools/test_net.py --gpu ${GPU_ID} \
-  --def models/${PT_DIR}/${NET}/rfcn_end2end/test_agonistic.prototxt \
+  --def models/${PT_DIR}/${NET}/rfcn_end2end/test_agnostic.prototxt \
   --net ${NET_FINAL} \
   --imdb ${TEST_IMDB} \
   --cfg experiments/cfgs/rfcn_end2end_ohem.yml \

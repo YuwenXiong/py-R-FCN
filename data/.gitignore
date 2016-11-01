@@ -4,4 +4,5 @@ fast_rcnn_models*
 faster_rcnn_models*
 rfcn_models*
 VOCdevkit*
+coco*
 cache

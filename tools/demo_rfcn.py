@@ -118,7 +118,7 @@ if __name__ == '__main__':
     args = parse_args()
 
     prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
-                            'rfcn_end2end', 'test_agonistic.prototxt')
+                            'rfcn_end2end', 'test_agnostic.prototxt')
     caffemodel = os.path.join(cfg.DATA_DIR, 'rfcn_models',
                               NETS[args.demo_net][1])
 

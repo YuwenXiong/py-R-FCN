@@ -3,6 +3,10 @@ R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
 py-R-FCN now supports joint training. 
 
+### News
+
+By changing the default value of 'max\_per\_image' and 'thresh' in test phase from py-faster-rcnn setting to offical implementation setting, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
+
 ### Disclaimer
 
 The official R-FCN code (written in MATLAB) is available [here](https://github.com/daijifeng001/R-FCN).
@@ -17,13 +21,13 @@ In particular, this Python port
 
 #### Some modification
 
-The original py-faster-rcnn uses class-aware bounding box regression. However, R-FCN use class-agonistic bounding box regression to reduce model complexity. So I add a configuration AGONISTIC into fast_rcnn/config.py, and the default value is False. You should set it to True both on train and test phase if you want to use class agonistic training and test. 
+The original py-faster-rcnn uses class-aware bounding box regression. However, R-FCN use class-agnostic bounding box regression to reduce model complexity. So I add a configuration AGNOSTIC into fast_rcnn/config.py, and the default value is False. You should set it to True both on train and test phase if you want to use class-agnostic training and test. 
 
 OHEM need all rois to select the hard examples, so I changed the sample strategy, set `BATCH_SIZE: -1` for OHEM, otherwise OHEM would not take effect.
 
 In conclusion:
 
-`AGONISTIC: True` is required for class-agonistic bounding box regression
+`AGNOSTIC: True` is required for class-agnostic bounding box regression
 
 `BATCH_SIZE: -1` is required for OHEM
 
@@ -47,8 +51,8 @@ If you find R-FCN useful in your research, please consider citing:
 ### Main Results
                    | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
-R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 76.9%(80k110k) | -        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 78.7%(80k110k) | -        | 0.136sec           |
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | ~~76.9%~~<br/>77.6%(80k110k) | -        | 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~78.7%~~<br/>79.4%(80k110k) | -        | 0.136sec           |
 
 
 ### Requirements: software

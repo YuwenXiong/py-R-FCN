@@ -234,6 +234,8 @@ def test_net(net, imdb, max_per_image=100, thresh=0.05, vis=False):
                  for _ in xrange(imdb.num_classes)]
 
     output_dir = get_output_dir(imdb, net)
+    max_per_image = 400
+    thresh = -np.inf
 
     # timers
     _t = {'im_detect' : Timer(), 'misc' : Timer()}
@@ -263,7 +265,7 @@ def test_net(net, imdb, max_per_image=100, thresh=0.05, vis=False):
         for j in xrange(1, imdb.num_classes):
             inds = np.where(scores[:, j] > thresh)[0]
             cls_scores = scores[inds, j]
-            if cfg.TEST.AGONISTIC:
+            if cfg.TEST.AGNOSTIC:
                 cls_boxes = boxes[inds, 4:8]
             else:
                 cls_boxes = boxes[inds, j*4:(j+1)*4]

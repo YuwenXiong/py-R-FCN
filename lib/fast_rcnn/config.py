@@ -124,7 +124,7 @@ __C.TRAIN.RPN_BBOX_INSIDE_WEIGHTS = (1.0, 1.0, 1.0, 1.0)
 __C.TRAIN.RPN_POSITIVE_WEIGHT = -1.0
 
 # whether use class aware box or not
-__C.TRAIN.AGONISTIC = False
+__C.TRAIN.AGNOSTIC = False
 
 #
 # Testing options
@@ -166,7 +166,7 @@ __C.TEST.RPN_POST_NMS_TOP_N = 300
 __C.TEST.RPN_MIN_SIZE = 16
 
 # whether use class aware box or not
-__C.TEST.AGONISTIC = False
+__C.TEST.AGNOSTIC = False
 
 
 #
