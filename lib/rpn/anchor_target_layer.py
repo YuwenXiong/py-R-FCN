@@ -129,6 +129,7 @@ class AnchorTargetLayer(caffe.Layer):
 
         # overlaps between the anchors and the gt boxes
         # overlaps (ex, gt)
+        gt_boxes = gt_boxes.reshape(gt_boxes.shape[0], gt_boxes.shape[1])
         overlaps = bbox_overlaps(
             np.ascontiguousarray(anchors, dtype=np.float),
             np.ascontiguousarray(gt_boxes, dtype=np.float))
@@ -278,4 +279,10 @@ def _compute_targets(ex_rois, gt_rois):
     assert ex_rois.shape[1] == 4
     assert gt_rois.shape[1] == 5
 
-    return bbox_transform(ex_rois, gt_rois[:, :4]).astype(np.float32, copy=False)
+    targets = bbox_transform(ex_rois, gt_rois[:, :4]).astype(np.float32, copy=False)
+    if cfg.TRAIN.RPN_NORMALIZE_TARGETS:
+        assert cfg.TRAIN.RPN_NORMALIZE_MEANS is not None
+        assert cfg.TRAIN.RPN_NORMALIZE_STDS is not None
+        targets -= cfg.TRAIN.RPN_NORMALIZE_MEANS
+        targets /= cfg.TRAIN.RPN_NORMALIZE_STDS
+    return targets
