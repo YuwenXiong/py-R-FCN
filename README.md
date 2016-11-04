@@ -61,8 +61,8 @@ R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~78.7%~~<br/>
 
                    | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
-R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | ~~77.4%| -        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~79.4%| -        | 0.136sec           |
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.4%| -        | 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| -        | 0.136sec           |
 
 ### Requirements: software
 
