@@ -109,30 +109,31 @@ class RoIDataLayer(caffe.Layer):
             # rois blob: holds R regions of interest, each is a 5-tuple
             # (n, x1, y1, x2, y2) specifying an image batch index n and a
             # rectangle (x1, y1, x2, y2)
-            top[idx].reshape(1, 5)
+            top[idx].reshape(1, 5, 1, 1)
             self._name_to_top_map['rois'] = idx
             idx += 1
 
             # labels blob: R categorical labels in [0, ..., K] for K foreground
             # classes plus background
-            top[idx].reshape(1)
+            top[idx].reshape(1, 1, 1, 1)
             self._name_to_top_map['labels'] = idx
             idx += 1
 
             if cfg.TRAIN.BBOX_REG:
                 # bbox_targets blob: R bounding-box regression targets with 4
                 # targets per class
-                top[idx].reshape(1, self._num_classes * 4)
+                num_reg_class = 2 if cfg.TRAIN.AGNOSTIC else self._num_classes
+                top[idx].reshape(1, num_reg_class * 4, 1, 1)
                 self._name_to_top_map['bbox_targets'] = idx
                 idx += 1
 
                 # bbox_inside_weights blob: At most 4 targets per roi are active;
                 # thisbinary vector sepcifies the subset of active targets
-                top[idx].reshape(1, self._num_classes * 4)
+                top[idx].reshape(1, num_reg_class * 4, 1, 1)
                 self._name_to_top_map['bbox_inside_weights'] = idx
                 idx += 1
 
-                top[idx].reshape(1, self._num_classes * 4)
+                top[idx].reshape(1, num_reg_class * 4, 1, 1)
                 self._name_to_top_map['bbox_outside_weights'] = idx
                 idx += 1
 
@@ -145,7 +146,11 @@ class RoIDataLayer(caffe.Layer):
 
         for blob_name, blob in blobs.iteritems():
             top_ind = self._name_to_top_map[blob_name]
-            # Reshape net's input blobs
+            shape = blob.shape
+            if len(shape) == 1:
+                blob = blob.reshape(blob.shape[0], 1, 1, 1)
+            if len(shape) == 2 and blob_name != 'im_info':
+                blob = blob.reshape(blob.shape[0], blob.shape[1], 1, 1)
             top[top_ind].reshape(*(blob.shape))
             # Copy data into net's input blobs
             top[top_ind].data[...] = blob.astype(np.float32, copy=False)

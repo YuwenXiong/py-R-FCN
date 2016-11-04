@@ -48,7 +48,9 @@ def parse_args():
                         action='store_true')
     parser.add_argument('--num_dets', dest='max_per_image',
                         help='max number of detections per image',
-                        default=100, type=int)
+                        default=400, type=int)
+    parser.add_argument('--rpn_file', dest='rpn_file',
+                        default=None, type=str)
 
     if len(sys.argv) == 1:
         parser.print_help()
@@ -84,7 +86,10 @@ if __name__ == '__main__':
 
     imdb = get_imdb(args.imdb_name)
     imdb.competition_mode(args.comp_mode)
+
     if not cfg.TEST.HAS_RPN:
         imdb.set_proposal_method(cfg.TEST.PROPOSAL_METHOD)
+        if cfg.TEST.PROPOSAL_METHOD == 'rpn':
+            imdb.config['rpn_file'] = args.rpn_file
 
     test_net(net, imdb, max_per_image=args.max_per_image, vis=args.vis)

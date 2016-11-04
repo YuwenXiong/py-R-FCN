@@ -66,6 +66,9 @@ class SolverWrapper(object):
                              cfg.TRAIN.BBOX_NORMALIZE_TARGETS and
                              net.params.has_key('rfcn_bbox'))
 
+        scale_bbox_params_rpn = (cfg.TRAIN.RPN_NORMALIZE_TARGETS and
+                                 net.params.has_key('rpn_bbox_pred'))
+
         if scale_bbox_params_faster_rcnn:
             # save original values
             orig_0 = net.params['bbox_pred'][0].data.copy()
@@ -79,13 +82,27 @@ class SolverWrapper(object):
                     (net.params['bbox_pred'][1].data *
                      self.bbox_stds + self.bbox_means)
 
+        if scale_bbox_params_rpn:
+            orig_0 = net.params['rpn_bbox_pred'][0].data.copy()
+            orig_1 = net.params['rpn_bbox_pred'][1].data.copy()
+            num_anchor = orig_0.shape[0] / 4
+            # scale and shift with bbox reg unnormalization; then save snapshot
+            self.bbox_means = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_MEANS),
+                                      num_anchor)
+            self.bbox_stds = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_STDS),
+                                     num_anchor)
+            net.params['rpn_bbox_pred'][0].data[...] = \
+                (net.params['rpn_bbox_pred'][0].data *
+                 self.bbox_stds[:, np.newaxis, np.newaxis, np.newaxis])
+            net.params['rpn_bbox_pred'][1].data[...] = \
+                (net.params['rpn_bbox_pred'][1].data *
+                 self.bbox_stds + self.bbox_means)
 
         if scale_bbox_params_rfcn:
             # save original values
             orig_0 = net.params['rfcn_bbox'][0].data.copy()
             orig_1 = net.params['rfcn_bbox'][1].data.copy()
             repeat = orig_1.shape[0] / self.bbox_means.shape[0]
-                        
 
             # scale and shift with bbox reg unnormalization; then save snapshot
             net.params['rfcn_bbox'][0].data[...] = \
@@ -111,6 +128,10 @@ class SolverWrapper(object):
             # restore net to original state
             net.params['rfcn_bbox'][0].data[...] = orig_0
             net.params['rfcn_bbox'][1].data[...] = orig_1
+        if scale_bbox_params_rpn:
+            # restore net to original state
+            net.params['rpn_bbox_pred'][0].data[...] = orig_0
+            net.params['rpn_bbox_pred'][1].data[...] = orig_1
 
         return filename
 

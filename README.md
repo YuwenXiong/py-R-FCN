@@ -1,9 +1,11 @@
 # py-R-FCN
 R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
-py-R-FCN now supports joint training. 
+py-R-FCN now supports both joint training and 5-step alternative optimization. 
 
 ### News
+
+py-R-FCN now supports 5-step alternative optimization described in original NIPS2016 paper.
 
 By changing the default value of `max_per_image` and `thresh` in test phase from py-faster-rcnn settings to offical implementation settings, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
 
@@ -48,11 +50,19 @@ If you find R-FCN useful in your research, please consider citing:
     }
     
 ### Main Results
+
+#### joint training
                    | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
 R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | ~~76.9%~~<br/>77.6%(80k110k) | -        | 0.099sec            |
 R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~78.7%~~<br/>79.4%(80k110k) | -        | 0.136sec           |
 
+#### alternative optimization
+
+                   | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
+-------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.4%| -        | 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| -        | 0.136sec           |
 
 ### Requirements: software
 
@@ -192,6 +202,9 @@ Output is written underneath `$RFCN_ROOT/output`.
 To train and test a R-FCN detector using the **approximate joint training** method **with OHEM**, use `experiments/scripts/rfcn_end2end_ohem.sh`.
 Output is written underneath `$RFCN_ROOT/output`.
 
+To train and test a R-FCN detector using the **alternative optimization** method **with OHEM**, use `experiments/scripts/rfcn_alt_opt_5stage_ohem.sh`.
+Output is written underneath `$RFCN_ROOT/output`
+
 ```Shell
 cd $RFCN_ROOT
 ./experiments/scripts/rfcn_end2end[_ohem].sh [GPU_ID] [NET] [DATASET] [--set ...]
@@ -216,6 +229,6 @@ output/<experiment directory>/<dataset name>/<network snapshot name>/
 
 ### Misc
 
-Tested on Ubuntu 14.04 with a Titan X GPU and Intel Xeon CPU E5-2620 v2 @ 2.10GHz 
+Tested on Ubuntu 14.04 with a Titan X / GTX1080 GPU and Intel Xeon CPU E5-2620 v2 @ 2.10GHz 
 
 py-faster-rcnn code can also work properly, but I do not add any other feature(such as ResNet and OHEM).

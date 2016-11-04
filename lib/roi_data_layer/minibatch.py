@@ -16,13 +16,14 @@ from utils.blob import prep_im_for_blob, im_list_to_blob
 def get_minibatch(roidb, num_classes):
     """Given a roidb, construct a minibatch sampled from it."""
     num_images = len(roidb)
+    num_reg_class = 2 if cfg.TRAIN.AGNOSTIC else num_classes
     # Sample random scales to use for each image in this batch
     random_scale_inds = npr.randint(0, high=len(cfg.TRAIN.SCALES),
                                     size=num_images)
-    assert(cfg.TRAIN.BATCH_SIZE % num_images == 0), \
+    assert(cfg.TRAIN.BATCH_SIZE % num_images == 0) or (cfg.TRAIN.BATCH_SIZE == -1), \
         'num_images ({}) must divide BATCH_SIZE ({})'. \
         format(num_images, cfg.TRAIN.BATCH_SIZE)
-    rois_per_image = cfg.TRAIN.BATCH_SIZE / num_images
+    rois_per_image = np.inf if cfg.TRAIN.BATCH_SIZE == -1 else cfg.TRAIN.BATCH_SIZE / num_images
     fg_rois_per_image = np.round(cfg.TRAIN.FG_FRACTION * rois_per_image)
 
     # Get the input image blob, formatted for caffe
@@ -46,7 +47,7 @@ def get_minibatch(roidb, num_classes):
         # Now, build the region of interest and label blobs
         rois_blob = np.zeros((0, 5), dtype=np.float32)
         labels_blob = np.zeros((0), dtype=np.float32)
-        bbox_targets_blob = np.zeros((0, 4 * num_classes), dtype=np.float32)
+        bbox_targets_blob = np.zeros((0, 4 * num_reg_class), dtype=np.float32)
         bbox_inside_blob = np.zeros(bbox_targets_blob.shape, dtype=np.float32)
         # all_overlaps = []
         for im_i in xrange(num_images):
@@ -79,6 +80,7 @@ def get_minibatch(roidb, num_classes):
                 np.array(bbox_inside_blob > 0).astype(np.float32)
 
     return blobs
+
 
 def _sample_rois(roidb, fg_rois_per_image, rois_per_image, num_classes):
     """Generate a random sample of RoIs comprising foreground and background
@@ -166,16 +168,28 @@ def _get_bbox_regression_labels(bbox_target_data, num_classes):
         bbox_inside_weights (ndarray): N x 4K blob of loss weights
     """
     clss = bbox_target_data[:, 0]
-    bbox_targets = np.zeros((clss.size, 4 * num_classes), dtype=np.float32)
+    num_reg_class = 2 if cfg.TRAIN.AGNOSTIC else num_classes
+    bbox_targets = np.zeros((clss.size, 4 * num_reg_class), dtype=np.float32)
     bbox_inside_weights = np.zeros(bbox_targets.shape, dtype=np.float32)
     inds = np.where(clss > 0)[0]
-    for ind in inds:
-        cls = clss[ind]
-        start = 4 * cls
-        end = start + 4
-        bbox_targets[ind, start:end] = bbox_target_data[ind, 1:]
-        bbox_inside_weights[ind, start:end] = cfg.TRAIN.BBOX_INSIDE_WEIGHTS
+
+    if cfg.TRAIN.AGNOSTIC:
+        for ind in inds:
+            cls = clss[ind]
+            start = 4 * (1 if cls > 0 else 0)
+            end = start + 4
+            bbox_targets[ind, start:end] = bbox_target_data[ind, 1:]
+            bbox_inside_weights[ind, start:end] = cfg.TRAIN.BBOX_INSIDE_WEIGHTS
+    else:
+        for ind in inds:
+            cls = clss[ind]
+            start = 4 * cls
+            end = start + 4
+            bbox_targets[ind, start:end] = bbox_target_data[ind, 1:]
+            bbox_inside_weights[ind, start:end] = cfg.TRAIN.BBOX_INSIDE_WEIGHTS
+
     return bbox_targets, bbox_inside_weights
+
 
 def _vis_minibatch(im_blob, rois_blob, labels_blob, overlaps):
     """Visualize a mini-batch for debugging."""

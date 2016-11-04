@@ -13,6 +13,7 @@ from fast_rcnn.bbox_transform import bbox_transform
 from utils.cython_bbox import bbox_overlaps
 import PIL
 
+
 def prepare_roidb(imdb):
     """Enrich the imdb's roidb by adding some derived quantities that
     are useful for training. This function precomputes the maximum
@@ -43,6 +44,7 @@ def prepare_roidb(imdb):
         nonzero_inds = np.where(max_overlaps > 0)[0]
         assert all(max_classes[nonzero_inds] != 0)
 
+
 def add_bbox_regression_targets(roidb):
     """Add information needed to train bounding-box regressors."""
     assert len(roidb) > 0
@@ -50,53 +52,55 @@ def add_bbox_regression_targets(roidb):
 
     num_images = len(roidb)
     # Infer number of classes from the number of columns in gt_overlaps
-    num_classes = 2 if cfg.TRAIN.AGNOSTIC else roidb[0]['gt_overlaps'].shape[1]
+    num_reg_classes = 2 if cfg.TRAIN.AGNOSTIC else roidb[0]['gt_overlaps'].shape[1]
     for im_i in xrange(num_images):
         rois = roidb[im_i]['boxes']
         max_overlaps = roidb[im_i]['max_overlaps']
         max_classes = roidb[im_i]['max_classes']
         roidb[im_i]['bbox_targets'] = \
-                _compute_targets(rois, max_overlaps, max_classes)
+            _compute_targets(rois, max_overlaps, max_classes)
 
     if cfg.TRAIN.BBOX_NORMALIZE_TARGETS_PRECOMPUTED:
         # Use fixed / precomputed "means" and "stds" instead of empirical values
         means = np.tile(
-                np.array(cfg.TRAIN.BBOX_NORMALIZE_MEANS), (num_classes, 1))
+            np.array(cfg.TRAIN.BBOX_NORMALIZE_MEANS), (num_reg_classes, 1))
         stds = np.tile(
-                np.array(cfg.TRAIN.BBOX_NORMALIZE_STDS), (num_classes, 1))
+            np.array(cfg.TRAIN.BBOX_NORMALIZE_STDS), (num_reg_classes, 1))
     else:
         # Compute values needed for means and stds
         # var(x) = E(x^2) - E(x)^2
-        class_counts = np.zeros((num_classes, 1)) + cfg.EPS
-        sums = np.zeros((num_classes, 4))
-        squared_sums = np.zeros((num_classes, 4))
+        class_counts = np.zeros((num_reg_classes, 1)) + cfg.EPS
+        sums = np.zeros((num_reg_classes, 4))
+        squared_sums = np.zeros((num_reg_classes, 4))
         for im_i in xrange(num_images):
             targets = roidb[im_i]['bbox_targets']
-            for cls in xrange(1, num_classes):
-                cls_inds = np.where(targets[:, 0] == cls)[0]
+            for cls in xrange(1, num_reg_classes):
+                cls_inds = np.where(targets[:, 0] > 0)[0] if cfg.TRAIN.AGNOSTIC \
+                    else np.where(targets[:, 0] == cls)[0]
                 if cls_inds.size > 0:
                     class_counts[cls] += cls_inds.size
                     sums[cls, :] += targets[cls_inds, 1:].sum(axis=0)
                     squared_sums[cls, :] += \
-                            (targets[cls_inds, 1:] ** 2).sum(axis=0)
+                        (targets[cls_inds, 1:] ** 2).sum(axis=0)
 
         means = sums / class_counts
         stds = np.sqrt(squared_sums / class_counts - means ** 2)
 
     print 'bbox target means:'
     print means
-    print means[1:, :].mean(axis=0) # ignore bg class
+    print means[1:, :].mean(axis=0)  # ignore bg class
     print 'bbox target stdevs:'
     print stds
-    print stds[1:, :].mean(axis=0) # ignore bg class
+    print stds[1:, :].mean(axis=0)  # ignore bg class
 
     # Normalize targets
     if cfg.TRAIN.BBOX_NORMALIZE_TARGETS:
         print "Normalizing targets"
         for im_i in xrange(num_images):
             targets = roidb[im_i]['bbox_targets']
-            for cls in xrange(1, num_classes):
-                cls_inds = np.where(targets[:, 0] == cls)[0]
+            for cls in xrange(1, num_reg_classes):
+                cls_inds = np.where(targets[:, 0] > 0) if cfg.TRAIN.AGNOSTIC \
+                    else np.where(targets[:, 0] == cls)[0]
                 roidb[im_i]['bbox_targets'][cls_inds, 1:] -= means[cls, :]
                 roidb[im_i]['bbox_targets'][cls_inds, 1:] /= stds[cls, :]
     else:
@@ -105,6 +109,7 @@ def add_bbox_regression_targets(roidb):
     # These values will be needed for making predictions
     # (the predicts will need to be unnormalized and uncentered)
     return means.ravel(), stds.ravel()
+
 
 def _compute_targets(rois, overlaps, labels):
     """Compute bounding-box regression targets for an image."""
