@@ -6,6 +6,7 @@
 # --------------------------------------------------------
 
 from fast_rcnn.config import cfg
+from fast_rcnn.train import filter_roidb
 from utils.blob import im_list_to_blob
 from utils.timer import Timer
 from generate_anchors import generate_anchors
@@ -127,7 +128,7 @@ def imdb_rpn_compute_stats(net, imdb, anchor_scales=(8,16,32),
     sums = 0
     squred_sums = 0
     counts = 0
-
+    roidb = filter_roidb(imdb.roidb)
     # Compute a map of input image size and output feature map blob
     map_w = {}
     map_h = {}
@@ -150,7 +151,7 @@ def imdb_rpn_compute_stats(net, imdb, anchor_scales=(8,16,32),
             print 'computing %d/%d' % (i, imdb.num_images)
         im = cv2.imread(imdb.image_path_at(i))
         im_data, im_info = _get_image_blob(im)
-        gt_boxes = imdb.roidb[i]['boxes']
+        gt_boxes = roidb[i]['boxes']
         gt_boxes = gt_boxes * im_info[0, 2]
         height = map_h[im_data.shape[2]]
         width = map_w[im_data.shape[3]]

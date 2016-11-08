@@ -34,9 +34,9 @@ case $DATASET in
     # You can probably use fewer iterations and reduce the
     # time to the LR drop (set in the solver to 350,000 iterations).
     TRAIN_IMDB="coco_2014_train"
-    TEST_IMDB="coco_2014_minival"
+    TEST_IMDB="coco_2014_val"
     PT_DIR="coco"
-    ITERS=490000
+    ITERS=960000
     ;;
   *)
     echo "No dataset given"

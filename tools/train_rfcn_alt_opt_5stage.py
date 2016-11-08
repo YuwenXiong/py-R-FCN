@@ -75,17 +75,27 @@ def get_roidb(imdb_name, rpn_file=None):
     return roidb, imdb
 
 
-def get_solvers(net_name, model_name):
+def get_solvers(imdb_name, net_name, model_name):
     # R-FCN Alternating Optimization
     # Solver for each training stage
-    solvers = [[net_name, model_name, 'stage1_rpn_solver60k80k.pt'],
-               [net_name, model_name, 'stage1_rfcn_ohem_solver80k120k.pt'],
-               [net_name, model_name, 'stage2_rpn_solver60k80k.pt'],
-               [net_name, model_name, 'stage2_rfcn_ohem_solver80k120k.pt'],
-               [net_name, model_name, 'stage3_rpn_solver60k80k.pt']]
-    solvers = [os.path.join(cfg.MODELS_DIR, *s) for s in solvers]
-    # Iterations for each training stage
-    max_iters = [80000, 120000, 80000, 120000, 80000]
+    if imdb_name.startswith('coco'):
+        solvers = [[net_name, model_name, 'stage1_rpn_solver360k480k.pt'],
+                   [net_name, model_name, 'stage1_rfcn_ohem_solver360k480k.pt'],
+                   [net_name, model_name, 'stage2_rpn_solver360k480k.pt'],
+                   [net_name, model_name, 'stage2_rfcn_ohem_solver360k480k.pt'],
+                   [net_name, model_name, 'stage3_rpn_solver360k480k.pt']]
+        solvers = [os.path.join(cfg.MODELS_DIR, *s) for s in solvers]
+        # Iterations for each training stage
+        max_iters = [480000, 480000, 480000, 480000, 480000]        
+    else:
+        solvers = [[net_name, model_name, 'stage1_rpn_solver60k80k.pt'],
+                   [net_name, model_name, 'stage1_rfcn_ohem_solver80k120k.pt'],
+                   [net_name, model_name, 'stage2_rpn_solver60k80k.pt'],
+                   [net_name, model_name, 'stage2_rfcn_ohem_solver80k120k.pt'],
+                   [net_name, model_name, 'stage3_rpn_solver60k80k.pt']]
+        solvers = [os.path.join(cfg.MODELS_DIR, *s) for s in solvers]
+        # Iterations for each training stage
+        max_iters = [80000, 120000, 80000, 120000, 80000]
     # Test prototxt for the RPN
     rpn_test_prototxt = os.path.join(
         cfg.MODELS_DIR, net_name, model_name, 'rpn_test.pt')
@@ -275,7 +285,7 @@ if __name__ == '__main__':
     # queue for communicated results between processes
     mp_queue = mp.Queue()
     # solves, iters, etc. for each training stage
-    solvers, max_iters, rpn_test_prototxt = get_solvers(args.net_name, args.model_name)
+    solvers, max_iters, rpn_test_prototxt = get_solvers(args.imdb_name, args.net_name, args.model_name)
 
     print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     print 'Stage 0 RPN, compute normalization means and stds'

@@ -87,16 +87,16 @@ class SolverWrapper(object):
             orig_1 = net.params['rpn_bbox_pred'][1].data.copy()
             num_anchor = orig_0.shape[0] / 4
             # scale and shift with bbox reg unnormalization; then save snapshot
-            self.bbox_means = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_MEANS),
+            self.rpn_means = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_MEANS),
                                       num_anchor)
-            self.bbox_stds = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_STDS),
+            self.rpn_stds = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_STDS),
                                      num_anchor)
             net.params['rpn_bbox_pred'][0].data[...] = \
                 (net.params['rpn_bbox_pred'][0].data *
-                 self.bbox_stds[:, np.newaxis, np.newaxis, np.newaxis])
+                 self.rpn_stds[:, np.newaxis, np.newaxis, np.newaxis])
             net.params['rpn_bbox_pred'][1].data[...] = \
                 (net.params['rpn_bbox_pred'][1].data *
-                 self.bbox_stds + self.bbox_means)
+                 self.rpn_stds + self.rpn_means)
 
         if scale_bbox_params_rfcn:
             # save original values

@@ -29,8 +29,10 @@ case $DATASET in
     PT_DIR="pascal_voc"
     ;;
   coco)
-    echo "Not implemented: use experiments/scripts/faster_rcnn_end2end.sh for coco"
-    exit
+    TRAIN_IMDB="coco_2014_train"
+    TEST_IMDB="coco_2014_val"
+    PT_DIR="coco"
+    ITERS=40000
     ;;
   *)
     echo "No dataset given"

@@ -1,8 +1,8 @@
 train_net: "models/coco/ResNet-101/rfcn_end2end/train_agnostic_ohem.prototxt"
-base_lr: 0.008
+base_lr: 0.0005
 lr_policy: "step"
 gamma: 0.1
-stepsize: 90000
+stepsize: 640000
 display: 100
 
 momentum: 0.9
@@ -13,5 +13,4 @@ snapshot: 0
 average_loss: 100
 # We still use the snapshot prefix, though
 snapshot_prefix: "resnet101_rfcn_ohem"
-iter_size: 8
 # debug_info: true
