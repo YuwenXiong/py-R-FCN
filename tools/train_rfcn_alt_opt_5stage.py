@@ -84,7 +84,7 @@ def get_solvers(imdb_name, net_name, model_name):
                    [net_name, model_name, 'stage2_rpn_solver360k480k.pt'],
                    [net_name, model_name, 'stage2_rfcn_ohem_solver360k480k.pt'],
                    [net_name, model_name, 'stage3_rpn_solver360k480k.pt']]
-        solvers = [os.path.join(cfg.MODELS_DIR, *s) for s in solvers]
+        solvers = [os.path.join('.', 'models', 'coco', *s) for s in solvers]
         # Iterations for each training stage
         max_iters = [480000, 480000, 480000, 480000, 480000]        
     else:
@@ -257,7 +257,10 @@ def rpn_compute_stats(queue=None, imdb_name=None, cfg=None, rpn_test_prototxt=No
         rpn_net = caffe.Net(rpn_test_prototxt, caffe.TEST)
         # Generate proposals on the imdb
         print 'start computing means/stds, it may take several minutes...'
-        means, stds = imdb_rpn_compute_stats(rpn_net, imdb)
+        if imdb_name.startswith('coco'):
+            means, stds = imdb_rpn_compute_stats(rpn_net, imdb, anchor_scales=(4, 8, 16, 32))
+        else:
+            means, stds = imdb_rpn_compute_stats(rpn_net, imdb, anchor_scales=(8, 16, 32))
         np.save(mean_file, means)
         np.save(std_file, stds)
     queue.put({'means': means, 'stds': stds})
