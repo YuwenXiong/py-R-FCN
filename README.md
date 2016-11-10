@@ -1,24 +1,18 @@
 # py-R-FCN
 R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
-py-R-FCN now supports both joint training and 5-step alternative optimization. 
-
-### News
-
-py-R-FCN now supports 5-step alternative optimization described in original NIPS2016 paper.
-
-By changing the default value of `max_per_image` and `thresh` in test phase from py-faster-rcnn settings to offical implementation settings, we can achieve 79.4 mAP with ResNet-101 and joint training(using the demo model I released previously).
+py-R-FCN now supports both joint training and alternative optimization. 
 
 ### Disclaimer
 
 The official R-FCN code (written in MATLAB) is available [here](https://github.com/daijifeng001/R-FCN).
 If your goal is to reproduce the results in the [NIPS 2016 paper](https://arxiv.org/abs/1605.06409), please use the [official code](https://github.com/daijifeng001/R-FCN).
 
-py-R-FCN is based on the [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn )(include this README) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ), thanks for their great works.
+py-R-FCN is modified from [py-faster-rcnn code](https://github.com/rbgirshick/py-faster-rcnn )(include this README) and [the offcial R-FCN implementation](https://github.com/daijifeng001/R-FCN), and the usage is quite similar to [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn ).
 
-There are slight differences between the two implementations.
-In particular, this Python port
- - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
+There are slight differences between py-R-FCN and the official R-FCN implementation.
+ - py-R-FCN is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 90ms / image vs. 99ms / image for ResNet-50)
+ - py-R-FCN supports both join training and alternative optimization of R-FCN.
 
 #### Some modification
 
@@ -52,17 +46,17 @@ If you find R-FCN useful in your research, please consider citing:
 ### Main Results
 
 #### joint training
-                   | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
--------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
-R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | ~~76.9%~~<br/>77.6%(80k110k) | -        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | ~~78.7%~~<br/>79.4%(80k110k) | -        | 0.136sec           |
+                   | training data       | test data             | mAP   | time/img (Titian X)
+-------------------|:-------------------:|:---------------------:|:-----:|:------------------:|
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.6% | 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4% | 0.136sec            |
 
 #### alternative optimization
 
-                   | training data       | test data             | mAP   | time/img (K40) | time/img (Titian X)
--------------------|:-------------------:|:---------------------:|:-----:|:--------------:|:------------------:|
-R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.4%| -        | 0.099sec            |
-R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| -        | 0.136sec           |
+                   | training data       | test data             | mAP   | time/img (Titian X)
+-------------------|:-------------------:|:---------------------:|:-----:|:------------------:|
+R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.4%| 0.099sec            |
+R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| 0.136sec           |
 
 ### Requirements: software
 
