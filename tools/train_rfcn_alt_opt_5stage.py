@@ -86,7 +86,10 @@ def get_solvers(imdb_name, net_name, model_name):
                    [net_name, model_name, 'stage3_rpn_solver360k480k.pt']]
         solvers = [os.path.join('.', 'models', 'coco', *s) for s in solvers]
         # Iterations for each training stage
-        max_iters = [480000, 480000, 480000, 480000, 480000]        
+        max_iters = [480000, 480000, 480000, 480000, 480000]
+        # Test prototxt for the RPN
+        rpn_test_prototxt = os.path.join(
+            '.', 'models', 'coco', net_name, model_name, 'rpn_test.pt')
     else:
         solvers = [[net_name, model_name, 'stage1_rpn_solver60k80k.pt'],
                    [net_name, model_name, 'stage1_rfcn_ohem_solver80k120k.pt'],
@@ -96,9 +99,9 @@ def get_solvers(imdb_name, net_name, model_name):
         solvers = [os.path.join(cfg.MODELS_DIR, *s) for s in solvers]
         # Iterations for each training stage
         max_iters = [80000, 120000, 80000, 120000, 80000]
-    # Test prototxt for the RPN
-    rpn_test_prototxt = os.path.join(
-        cfg.MODELS_DIR, net_name, model_name, 'rpn_test.pt')
+        # Test prototxt for the RPN
+        rpn_test_prototxt = os.path.join(
+            cfg.MODELS_DIR, net_name, model_name, 'rpn_test.pt')
     return solvers, max_iters, rpn_test_prototxt
 
 
