@@ -50,6 +50,7 @@ class coco(imdb):
                        'use_salt' : True,
                        'cleanup' : True,
                        'crowd_thresh' : 0.7,
+                       'rpn_file': None,
                        'min_size' : 2}
         # name, paths
         self._year = year
@@ -128,6 +129,25 @@ class coco(imdb):
 
     def mcg_roidb(self):
         return self._roidb_from_proposals('MCG')
+
+    def rpn_roidb(self):
+        if (self._image_set != 'val') and ('test' not in self._image_set):
+            gt_roidb = self.gt_roidb()
+            rpn_roidb = self._load_rpn_roidb(gt_roidb)
+            roidb = imdb.merge_roidbs(gt_roidb, rpn_roidb)
+        else:
+            roidb = self._load_rpn_roidb(None)
+
+        return roidb
+
+    def _load_rpn_roidb(self, gt_roidb):
+        filename = self.config['rpn_file']
+        print 'loading {}'.format(filename)
+        assert os.path.exists(filename), \
+               'rpn data not found at: {}'.format(filename)
+        with open(filename, 'rb') as f:
+            box_list = cPickle.load(f)
+        return self.create_roidb_from_box_list(box_list, gt_roidb)
 
     def _roidb_from_proposals(self, method):
         """

@@ -7025,7 +7025,6 @@ layer {
   bottom: 'rpn_bbox_outside_weights'
   top: "rpn_loss_bbox"
   loss_weight: 1
-  smooth_l1_loss_param { sigma: 3.0 }
 }
 
 #========= RoI Proposal ============

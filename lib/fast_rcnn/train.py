@@ -83,9 +83,9 @@ class SolverWrapper(object):
                      self.bbox_stds + self.bbox_means)
 
         if scale_bbox_params_rpn:
-            orig_0 = net.params['rpn_bbox_pred'][0].data.copy()
-            orig_1 = net.params['rpn_bbox_pred'][1].data.copy()
-            num_anchor = orig_0.shape[0] / 4
+            rpn_orig_0 = net.params['rpn_bbox_pred'][0].data.copy()
+            rpn_orig_1 = net.params['rpn_bbox_pred'][1].data.copy()
+            num_anchor = rpn_orig_0.shape[0] / 4
             # scale and shift with bbox reg unnormalization; then save snapshot
             self.rpn_means = np.tile(np.asarray(cfg.TRAIN.RPN_NORMALIZE_MEANS),
                                       num_anchor)
@@ -130,8 +130,8 @@ class SolverWrapper(object):
             net.params['rfcn_bbox'][1].data[...] = orig_1
         if scale_bbox_params_rpn:
             # restore net to original state
-            net.params['rpn_bbox_pred'][0].data[...] = orig_0
-            net.params['rpn_bbox_pred'][1].data[...] = orig_1
+            net.params['rpn_bbox_pred'][0].data[...] = rpn_orig_0
+            net.params['rpn_bbox_pred'][1].data[...] = rpn_orig_1
 
         return filename
 

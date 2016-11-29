@@ -24,7 +24,7 @@ EXTRA_ARGS_SLUG=${EXTRA_ARGS// /_}
 
 case $DATASET in
   pascal_voc)
-    TRAIN_IMDB="voc_0712_trainval"
+    TRAIN_IMDB="voc_2007_trainval+voc_2012_trainval"
     TEST_IMDB="voc_0712_test"
     PT_DIR="pascal_voc"
     ITERS=110000
@@ -36,7 +36,7 @@ case $DATASET in
     TRAIN_IMDB="coco_2014_train"
     TEST_IMDB="coco_2014_val"
     PT_DIR="coco"
-    ITERS=960000
+    ITERS=1920000
     ;;
   *)
     echo "No dataset given"

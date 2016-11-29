@@ -2,7 +2,7 @@ train_net: "models/coco/ResNet-101/rfcn_end2end/train_agnostic_ohem.prototxt"
 base_lr: 0.0005
 lr_policy: "step"
 gamma: 0.1
-stepsize: 640000
+stepsize: 1280000
 display: 100
 
 momentum: 0.9

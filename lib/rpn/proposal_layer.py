@@ -110,6 +110,9 @@ class ProposalLayer(caffe.Layer):
         # reshape to (1 * H * W * A, 4) where rows are ordered by (h, w, a)
         # in slowest to fastest order
         bbox_deltas = bbox_deltas.transpose((0, 2, 3, 1)).reshape((-1, 4))
+        if cfg_key == 'TRAIN' and cfg.TRAIN.RPN_NORMALIZE_TARGETS:
+            bbox_deltas *= cfg.TRAIN.RPN_NORMALIZE_STDS
+            bbox_deltas += cfg.TRAIN.RPN_NORMALIZE_MEANS
 
         # Same story for the scores:
         #
