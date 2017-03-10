@@ -81,7 +81,7 @@ R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| 0.136se
   # Unrelatedly, it's also recommended that you use CUDNN
   USE_CUDNN := 1
   ```
-2. Python packages you might not have: `cython`, `python-opencv`, `easydict`
+2. Python packages you might not have: `cython`, `opencv-python`, `easydict`
 3. [Optional] MATLAB is required for **official** PASCAL VOC evaluation only. The code now includes unofficial Python evaluation code.
 
 ### Requirements: hardware
