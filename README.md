@@ -52,7 +52,7 @@ R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4% | 0.136s
 
                    | training data       | test data             | mAP@[0.5:0.95]   | time/img (Titian X)
 -------------------|:-------------------:|:---------------------:|:-----:|:------------------:|
-R-FCN, ResNet-101  | COCO 2014 train     | COCO 2014 val         | 29.0% | 0.0138sec          |
+R-FCN, ResNet-101  | COCO 2014 train     | COCO 2014 val         | 27.9% | 0.0138sec          |
 
 #### alternative optimization
 
@@ -60,6 +60,12 @@ R-FCN, ResNet-101  | COCO 2014 train     | COCO 2014 val         | 29.0% | 0.013
 -------------------|:-------------------:|:---------------------:|:-----:|:------------------:|
 R-FCN, ResNet-50  | VOC 07+12 trainval  | VOC 07 test           | 77.4%| 0.099sec            |
 R-FCN, ResNet-101 | VOC 07+12 trainval  | VOC 07 test           | 79.4%| 0.136sec           |
+
+
+[VOC 0712 model (trained on VOC07+12 trainval) of R-FCN](https://1drv.ms/u/s!AoN7vygOjLIQqUWHpY67oaC7mopf)
+
+[COCO model (trained on 2014 train) of R-FCN](https://1drv.ms/u/s!AoN7vygOjLIQqiZEmKSodg7UudD4)
+
 
 ### Requirements: software
 
