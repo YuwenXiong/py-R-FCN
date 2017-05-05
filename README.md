@@ -1,7 +1,9 @@
 # py-R-FCN
 R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
-py-R-FCN now supports both joint training and alternative optimization. 
+
+**It is highly recommended to use the [MXNet version of R-FCN/Deformable R-FCN](https://github.com/msracver/Deformable-ConvNets), which supports multi-GPU train/test.**
+
 
 ### Disclaimer
 
