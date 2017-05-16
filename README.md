@@ -55,7 +55,7 @@ If you find R-FCN useful in your research, please consider citing:
 
 |                   | training data       | test data             | mAP@[0.5:0.95]   | time/img (Titian X)|
 |-------------------|:-------------------:|:---------------------:|:-----:|:------------------:|
-|R-FCN, ResNet-101  | COCO 2014 train     | COCO 2014 val         | 27.9% | 0.0138sec          |
+|R-FCN, ResNet-101  | COCO 2014 train     | COCO 2014 val         | 27.9% | 0.138sec          |
 
 #### alternative optimization
 
