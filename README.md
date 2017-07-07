@@ -4,6 +4,7 @@ R-FCN: Object Detection via Region-based Fully Convolutional Networks
 
 **It is highly recommended to use the [MXNet version of R-FCN/Deformable R-FCN](https://github.com/msracver/Deformable-ConvNets), which supports multi-GPU train/test.**
 
+**WARNING: This code does not support CPU-only mode.** (See https://github.com/Orpine/py-R-FCN/issues/28).
 
 ### Disclaimer
 
