@@ -3589,7 +3589,7 @@ layer {
     name: "rfcn_bbox"
     type: "Convolution"
     convolution_param {
-        num_output: 392 #8*(7^2) cls_num*(score_maps_size^2)
+        num_output: 392 #2*4*(7^2) (bg/fg)*(dx, dy, dw, dh)*(score_maps_size^2)
         kernel_size: 1
         pad: 0
         weight_filler {
